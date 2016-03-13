@@ -32,7 +32,7 @@ use CPAN::Testers::Fact::LegacyReport;
 use CPAN::Testers::Fact::TestSummary;
 use File::Slurper;
 use HTML::Entities;
-use JSON::XS;
+use JSON::MaybeXS;
 use Metabase::Resource;
 use XML::RSS;
 use YAML::XS;

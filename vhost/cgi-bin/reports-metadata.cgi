@@ -52,7 +52,7 @@ use CPAN::Testers::Common::DBUtils;
 use Data::Dumper;
 use Getopt::Long;
 use IO::File;
-use JSON::XS;
+use JSON::MaybeXS;
 
 # -------------------------------------
 # Variables

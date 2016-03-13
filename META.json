@@ -42,7 +42,7 @@
                 "Getopt::Long": "0",
                 "HTML::Entities": "0",
                 "IO::File": "0",
-                "JSON::XS": "0",
+                "JSON::MaybeXS": "0",
                 "Labyrinth": "5.27",
                 "Labyrinth::DIUtils::ImageMagick": "5.04",
                 "Labyrinth::Plugin::Core": "5.18",

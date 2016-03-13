@@ -40,7 +40,7 @@ use Labyrinth::Variables;
 use Labyrinth::Plugin::Content;
 use Labyrinth::Plugin::CPAN;
 
-use JSON::XS;
+use JSON::MaybeXS;
 use File::Find::Rule;
 use File::Slurper;
 use Getopt::Long;

@@ -33,7 +33,7 @@ use Clone   qw(clone);
 use Cwd;
 use File::Path;
 use File::Slurper;
-use JSON::XS;
+use JSON::MaybeXS;
 #use Sort::Versions;
 use Time::Local;
 use XML::RSS;

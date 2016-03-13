@@ -24,7 +24,7 @@ use Labyrinth::Plugin::CPAN;
 use Labyrinth::Variables;
 use Labyrinth::Writer;
 
-use JSON::XS;
+use JSON::MaybeXS;
 
 #----------------------------------------------------------------------------
 # Public Interface Functions

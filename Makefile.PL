@@ -44,7 +44,7 @@ WriteMakefile(
         'GD::Graph::lines'                  => '0',
         'GD::Graph::colour'                 => '0',
         'HTML::Entities'                    => '0',
-        'JSON::XS'                          => '0',
+        'JSON::MaybeXS'                     => '0',
         'Metabase::Resource'                => '0',
         'Sort::Versions'                    => '0',
         'Time::Local'                       => '0',
