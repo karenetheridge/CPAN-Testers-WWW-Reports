@@ -53,13 +53,12 @@ WriteMakefile(
         'XML::RSS'                          => '0',
         'YAML::XS'                          => '0',
 
-        # for testing only
-        'Test::More'                        => '0',
-
         # for toolkit scripts
         'File::Find::Rule'                  => '0',
         'Getopt::Long'                      => '0'
-
+    },
+    TEST_REQUIRES => {
+        'Test::More'                        => '0',
     },
     META_MERGE => {
         'meta-spec' => { version => 2 },
