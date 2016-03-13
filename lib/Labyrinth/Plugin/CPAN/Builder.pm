@@ -32,7 +32,7 @@ use Labyrinth::Plugin::Articles::Site;
 use Clone   qw(clone);
 use Cwd;
 use File::Path;
-use File::Slurp;
+use File::Slurper;
 use JSON::XS;
 #use Sort::Versions;
 use Time::Local;
@@ -108,7 +108,7 @@ sub BasePages {
 
     $tvars{content} = "content/welcome.html";
     my $text = Transform( 'cpan/layout-static.html', \%tvars );
-    overwrite_file( $cache . '/index.html', $text );
+    write_text( $cache . '/index.html', $text );
 
     my $site = Labyrinth::Plugin::Articles::Site->new();
     $tvars{content} = "articles/arts-item.html";
@@ -116,7 +116,7 @@ sub BasePages {
         $cgiparams{'name'} = $page;
         $site->Item();
         $text = Transform( 'cpan/layout-static.html', \%tvars );
-        overwrite_file( "$cache/page/$page.html", $text );
+        write_text( "$cache/page/$page.html", $text );
     }
 }
 
@@ -221,7 +221,7 @@ sub IndexPages {
         $tvars{content} = "cpan/$type-list.html";
         $tvars{list}    = \@list if(@list);
         my $text = Transform( 'cpan/layout-static.html', \%tvars );
-        overwrite_file( $cache . '/index.html', $text );
+        write_text( $cache . '/index.html', $text );
 
         if($type eq 'distro') {
             $cache = sprintf "%s/stats/%s/%s", $settings{webdir}, $type, substr($index->{name},0,1);
@@ -232,7 +232,7 @@ sub IndexPages {
             $tvars{content} = 'cpan/stats-distro-index.html';
             $tvars{cache}   = $cache;
             $text = Transform( 'cpan/layout-stats-static.html', \%tvars );
-            overwrite_file( $cache . '/index.html', $text );
+            write_text( $cache . '/index.html', $text );
         }
 
         # remove requests
@@ -294,7 +294,7 @@ sub RemoveAuthorPages {
 
         # load JSON, if we have one
         if(-f $destfile) {
-            my $data  = read_file($destfile);
+            my $data  = read_text($destfile);
             my $store;
             eval { $store = decode_json($data) };
             if(!$@ && $store) {
@@ -304,7 +304,7 @@ sub RemoveAuthorPages {
                     push @reports, $row;
                 }
             }
-            overwrite_file( $destfile, _make_json( \@reports ) );
+            write_text( $destfile, _make_json( \@reports ) );
         }
 
         # clean the summary, if we have one
@@ -388,7 +388,7 @@ sub RemoveDistroPages {
 
         # load JSON, if we have one
         if(-f $destfile) {
-            my $data  = read_file($destfile);
+            my $data  = read_text($destfile);
             my $store;
             eval { $store = decode_json($data) };
             if(!$@ && $store) {
@@ -398,7 +398,7 @@ sub RemoveDistroPages {
                     push @reports, $row;
                 }
             }
-            overwrite_file( $destfile, _make_json( \@reports ) );
+            write_text( $destfile, _make_json( \@reports ) );
         }
     }
 
@@ -444,7 +444,7 @@ sub AuthorPages {
 
             # load JSON, if we have one
             if(-f $destfile && $lastid) {
-                my $data  = read_file($destfile);
+                my $data  = read_text($destfile);
                 my $store;
                 eval { $store = decode_json($data); };
                 if(!$@ && $store) {
@@ -543,12 +543,12 @@ sub AuthorPages {
 
             # build other static pages
             my $text = Transform( 'cpan/layout-static.html', \%vars );
-            overwrite_file( "$cache/$name.html", $text );
+            write_text( "$cache/$name.html", $text );
 
             $text = Transform( 'cpan/author.js', \%vars );
-            overwrite_file( "$cache/$name.js", $text );
+            write_text( "$cache/$name.js", $text );
 
-            overwrite_file( "$cache/$name.json", _make_json( \@reports ) );
+            write_text( "$cache/$name.json", _make_json( \@reports ) );
         }
     }
 
@@ -620,7 +620,7 @@ sub DistroPages {
 
             # load JSON data if available
             if(-f $destfile && $lastid) {
-                my $json = read_file($destfile);
+                my $json = read_text($destfile);
                 my $data;
                 eval { $data = decode_json($json); };
                 if(!$@ && $data) {
@@ -761,12 +761,12 @@ sub DistroPages {
             # build other static pages
             $vars{content} = 'cpan/distro-reports-static.html';
             my $text = Transform( 'cpan/layout-static.html', \%vars );
-            overwrite_file( "$cache/$name.html", $text );
+            write_text( "$cache/$name.html", $text );
 
             $text = Transform( 'cpan/distro.js', \%vars );
-            overwrite_file( "$cache/$name.js", $text );
+            write_text( "$cache/$name.js", $text );
 
-            overwrite_file( "$cache/$name.json", _make_json( \@reports ) );
+            write_text( "$cache/$name.json", _make_json( \@reports ) );
 
             $cache = sprintf "%s/stats/distro/%s", $settings{webdir}, substr($name,0,1);
             mkpath($cache);
@@ -774,7 +774,7 @@ sub DistroPages {
 
             $vars{content} = 'cpan/stats-distro-static.html';
             $text = Transform( 'cpan/layout-stats-static.html', \%vars );
-            overwrite_file( "$cache/$name.html", $text );
+            write_text( "$cache/$name.html", $text );
 
             # generate symbolic links where necessary
             if($merged->{$name}) {
@@ -878,7 +878,7 @@ sub StatsPages {
         $tvars{cache}       = $cache;
         $tvars{content}     = 'cpan/stats-perl-platform.html';
         $text = Transform( 'cpan/layout-stats-static.html', \%tvars );
-        overwrite_file( "$cache/$destfile", $text );
+        write_text( "$cache/$destfile", $text );
     }
 
     my @perl_osnames;
@@ -922,7 +922,7 @@ sub StatsPages {
         $tvars{cache}       = $cache;
         $tvars{content}     = 'cpan/stats-perl-version.html';
         $text = Transform( 'cpan/layout-stats-static.html', \%tvars );
-        overwrite_file( "$cache/$destfile", $text );
+        write_text( "$cache/$destfile", $text );
     }
 
     # how many test reports per platform per perl version?
@@ -932,7 +932,7 @@ sub StatsPages {
     $tvars{cache}   = $cache;
     $tvars{content} = 'cpan/stats-perl-platform-count.html';
     $text = Transform( 'cpan/layout-stats-static.html', \%tvars );
-    overwrite_file( "$cache/$destfile", $text );
+    write_text( "$cache/$destfile", $text );
 
     # generate index.html
     $destfile       = "index.html";
@@ -940,7 +940,7 @@ sub StatsPages {
     $tvars{cache}   = $cache;
     $tvars{content} = 'cpan/stats-index.html';
     $text = Transform( 'cpan/layout-stats-static.html', \%tvars );
-    overwrite_file( "$cache/$destfile", $text );
+    write_text( "$cache/$destfile", $text );
 
 #    # create symbolic links
 #    for my $link ('headings', 'background.png', 'style.css', 'cpan-testers.css') {
@@ -989,11 +989,11 @@ sub RecentPage {
     $tvars{content} = 'cpan/recent.html';
 
     my $text = Transform( 'cpan/layout-static.html', \%tvars );
-    overwrite_file( $cache . '/recent.html', $text );
+    write_text( $cache . '/recent.html', $text );
     $tvars{recent} = undef;
 
     my $destfile = "$cache/recent.rss";
-    overwrite_file( $destfile, _make_rss( 'recent', undef, \@recent ) );
+    write_text( $destfile, _make_rss( 'recent', undef, \@recent ) );
 }
 
 #----------------------------------------------------------------------------

@@ -42,7 +42,7 @@ use Labyrinth::Plugin::CPAN;
 
 use JSON::XS;
 use File::Find::Rule;
-use File::Slurp;
+use File::Slurper;
 use Getopt::Long;
 
 #----------------------------------------------------------
@@ -200,7 +200,7 @@ sub check_author_static {
     my $count = scalar @files;
 
     for my $file (@files) {
-        my $content = read_file($file);
+        my $content = read_text($file);
         my ($name) = ($file =~ m!.*/(.*?)\.html$!);
 
         if(     $content =~ m!/(author|distro)/\w{2,}! || 
@@ -236,7 +236,7 @@ sub check_distro_static {
     for my $file (@files) {
         my ($name) = ($file =~ m!.*/(.*?)\.html$!);
         next    if($ignore->{$name});
-        my $content = read_file($file);
+        my $content = read_text($file);
 
         if(     $content =~ m!/(author|distro)/\w{2,}! || 
                 $content =~ m!/static/! ||
@@ -268,7 +268,7 @@ sub check_author_rss {
     my $count = scalar @files;
 
     for my $file (@files) {
-        my $content = read_file($file);
+        my $content = read_text($file);
         my ($name) = ($file =~ m!.*/(.*?)(-nopass)?\.rss$!);
 
         if($content =~ m!<title>[^A-Z]+!) {
@@ -301,7 +301,7 @@ sub check_distro_rss {
     for my $file (@files) {
         my ($name) = ($file =~ m!.*/(.*?)\.html$!);
         next    if($ignore->{$name});
-        my $content = read_file($file);
+        my $content = read_text($file);
 
         if($content =~ m!<title>[^A-Z]+!) {
             $pushed++;
@@ -492,7 +492,7 @@ sub check_author_json {
         next    unless(-d $file);
         $file = sprintf "$AUTHORS/%s/%s.json", uc substr($name,0,1), $name;
         if(-f $file) {
-            my $json = read_file($file);
+            my $json = read_text($file);
             my $data = decode_json($json);
             next    unless(scalar(@$data));
 
@@ -508,7 +508,7 @@ sub check_author_json {
                 $updated++  if($trial);
                 if($options{update}) {
                     $json = encode_json($data);
-                    write_file($file,$json);
+                    write_text($file,$json);
                 }
                 _log("UPDATE: $name")                if($options{verbose});
             } else {
@@ -541,7 +541,7 @@ sub check_distro_json {
         my $file = sprintf "$DISTROS/%s/%s.json", uc substr($name,0,1), $name;
 
         if(-f $file) {
-            my $json = read_file($file);
+            my $json = read_text($file);
             my $data = decode_json($json);
             next    unless(scalar(@$data));
 
@@ -557,7 +557,7 @@ sub check_distro_json {
                 $updated++  if($trial);
                 if($options{update}) {
                     $json = encode_json($data);
-                    write_file($file,$json);
+                    write_text($file,$json);
                 }
                 _log("UPDATE: $name")                if($options{verbose});
             } else {

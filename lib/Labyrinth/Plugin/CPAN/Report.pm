@@ -30,7 +30,7 @@ use CPAN::Testers::Common::Article;
 use CPAN::Testers::Common::Utils qw(nntp_to_guid guid_to_nntp);
 use CPAN::Testers::Fact::LegacyReport;
 use CPAN::Testers::Fact::TestSummary;
-use File::Slurp;
+use File::Slurper;
 use HTML::Entities;
 use JSON::XS;
 use Metabase::Resource;
@@ -142,7 +142,7 @@ sub load_rss {
 
     # load JSON data if available
     if(-f "$cache.json") {
-        my $json = read_file("$cache.json");
+        my $json = read_text("$cache.json");
         my $data = decode_json($json);
         my @reports;
         for my $row (sort {$b->{fulldate} <=> $a->{fulldate}} @$data) {
@@ -157,7 +157,7 @@ sub load_rss {
     # fall back to any existing RSS
     } else {
         my $file = $nopass ? "$cache-nopass.rss" : "$cache.rss";
-        $tvars{body} = read_file("$cache.rss")  if(-f $file);
+        $tvars{body} = read_text("$cache.rss")  if(-f $file);
     }
 
     $tvars{realm} = 'rss';
@@ -250,7 +250,7 @@ sub load_yaml {
 
     # load JSON data if available
     if(-f "$cache.json") {
-        my $json = read_file("$cache.json");
+        my $json = read_text("$cache.json");
         my $data = decode_json($json);
         my @reports;
         for my $row (@$data) {
@@ -261,7 +261,7 @@ sub load_yaml {
 
     # fall back to any existing RSS
     } elsif(-f "$cache.yaml") {
-        $tvars{body} = read_file("$cache.yaml");
+        $tvars{body} = read_text("$cache.yaml");
     }
 
     $tvars{realm} = 'yaml';

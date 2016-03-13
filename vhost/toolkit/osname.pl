@@ -42,7 +42,6 @@ use Labyrinth::Plugin::CPAN;
 
 use JSON::XS;
 use File::Find::Rule;
-use File::Slurp;
 use Getopt::Long;
 
 use CPAN::Testers::Common::Article;

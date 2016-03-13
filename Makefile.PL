@@ -40,7 +40,7 @@ WriteMakefile(
         'CPAN::Testers::Fact::TestSummary'  => '0',
         'Data::FlexSerializer'              => '0',
         'Email::Address'                    => '0',
-        'File::Slurp'                       => '0',
+        'File::Slurper'                     => '0',
         'GD::Graph::lines'                  => '0',
         'GD::Graph::colour'                 => '0',
         'HTML::Entities'                    => '0',
