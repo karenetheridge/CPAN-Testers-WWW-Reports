@@ -7,11 +7,12 @@ use 5.006;
 use ExtUtils::MakeMaker;
 
 WriteMakefile(
-    AUTHOR              => 'Barbie <barbie@cpan.org>',
+    AUTHOR              => 'Barbie (BARBIE) <barbie@cpan.org>',
     NAME                => 'CPAN::Testers::WWW::Reports',
     VERSION_FROM        => 'lib/CPAN/Testers/WWW/Reports.pm',
     ABSTRACT            => 'The CPAN Testers Reports website',
     NO_META             => 1,
+    LICENSE             => 'artistic_2',
     PREREQ_PM           => {
 
         # Labyrinth Modules
@@ -59,5 +60,25 @@ WriteMakefile(
         'File::Find::Rule'                  => '0',
         'Getopt::Long'                      => '0'
 
-    }
+    },
+    META_MERGE => {
+        'meta-spec' => { version => 2 },
+        dynamic_config => 0,
+        keywords => [ qw(qa cpan testing) ],
+        no_index => {
+            directory => ['t','examples','vhost'],
+        },
+        resources => {
+            homepage => 'https://www.cpantesters.org',
+            repository => {
+                url => 'https://github.com/barbie/cpan-testers-www-reports.git',
+                web => 'https://github.com/barbie/cpan-testers-www-reports',
+                type => 'git',
+            },
+            bugtracker => {
+                mailto => 'bug-CPAN-Testers-WWW-Reports@rt.cpan.org',
+                web => 'https://rt.cpan.org/Public/Dist/Display.html?Name=CPAN-Testers-WWW-Reports',
+            },
+        },
+    },
 );
