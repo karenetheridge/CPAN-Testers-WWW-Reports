@@ -1,0 +1,9 @@
+/blib/
+/pm_to_blib
+/_eumm/
+!/.gitignore
+/MYMETA.*
+/Makefile
+/Makefile.old
+/CPAN-Testers-WWW-Reports-*/
+/CPAN-Testers-WWW-Reports-*.tar.gz
